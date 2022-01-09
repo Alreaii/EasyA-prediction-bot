@@ -1,0 +1,1 @@
+# EasyA-prediction-bot
