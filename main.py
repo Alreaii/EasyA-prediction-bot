@@ -20,13 +20,23 @@ bot = commands.Bot(
 dictOfScores = {
   "A*" : 56, 
   "AS" : 56,
+  "As" : 56,
+  "as" : 56,
+  "aS" : 56,
   "A" : 48,
+  "a" : 48,
   "B" : 40,
+  "b" : 40,
   "C" : 32,
+  "c" : 32,
   "D" : 24,
+  "d" : 24,
   "E" : 16,
+  "e" : 17, 
   "F" : 8,
-  "U" : 0
+  "f" : 8,
+  "U" : 0,
+  "u" : 0
 }
 
 SecretBotToken = os.environ['.env'] # Discord bot token stored in repl.it secrets 
@@ -75,14 +85,17 @@ def matavg(score):
 
 
 
-@bot.command(name='chance')
-async def chance(ctx, gcses):
+@bot.command(name='myOxbridgeChances')
+async def myOxbridgeChances(ctx, gcses):
   await ctx.send("Please make sure you use the correct format (eg AS,A,A) (no spaces)")
+  await ctx.send("Due to a discord quirk, please use AS instead of A*")
   gcsesList = gcses.split(",")
   for i in range(0, len(gcses)):
-    n = 0
-    tempCheck = gcsesList[n]
+    tempCheck = gcsesList[i]
     tempCheck = str(tempCheck)
+    if tempCheck == "A*":
+      tempCheck == str("AS")
+      print(tempCheck)
     if tempCheck.isalpha() == False:
       await ctx.send("Invalid input - maybe you put a number? - please convert 9-1 system to grades, 8/9 both considered AS")
       break
@@ -102,6 +115,8 @@ async def chance(ctx, gcses):
         await ctx.send(f"You have: {msg.content}") #checks user result
         aLevelsList = msg.content.split(",")
         for i in range(len(aLevelsList)):
+          if i == "A*":
+            i == "AS"
           resultMapping2 = sum(map(lambda x: dictOfScores.get(x, 0), aLevelsList))
 
         await ctx.send(CalculateALevelAverage(resultMapping2))
@@ -111,10 +126,12 @@ async def chance(ctx, gcses):
           msg = await bot.wait_for("message", check=check_response, timeout=15) #same as line 93
           await ctx.send(f"You said: {msg.content}.")
           a = msg.content.isalpha()
+          if msg.content == "N/A" or a == "N/a" or a == "n/a" or a == "n/A":
+            MATScore = 0
           if a == False:
             MATScore = matavg(float(msg.content))
           else:
-            await ctx.send(f"Something is wrong. Please try again. (PS, did you put letters in?")
+            await ctx.send(f"Something is wrong. Please try again. (did you put letters in?)")
 
           averageCambridgeScore = 1295.24
           UserAlvlScore = resultMapping2
