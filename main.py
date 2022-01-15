@@ -20,23 +20,14 @@ bot = commands.Bot(
 dictOfScores = {
   "A*" : 56, 
   "AS" : 56,
-  "As" : 56,
-  "as" : 56,
-  "aS" : 56,
   "A" : 48,
-  "a" : 48,
   "B" : 40,
-  "b" : 40,
   "C" : 32,
-  "c" : 32,
   "D" : 24,
-  "d" : 24,
   "E" : 16,
-  "e" : 17, 
   "F" : 8,
   "f" : 8,
   "U" : 0,
-  "u" : 0
 }
 
 SecretBotToken = os.environ['.env'] # Discord bot token stored in repl.it secrets 
@@ -89,6 +80,7 @@ def matavg(score):
 async def myOxbridgeChances(ctx, gcses):
   await ctx.send("Please make sure you use the correct format (eg AS,A,A) (no spaces)")
   await ctx.send("Due to a discord quirk, please use AS instead of A*")
+  gcses = gcses.upper()
   gcsesList = gcses.split(",")
   for i in range(0, len(gcses)):
     tempCheck = gcsesList[i]
@@ -113,6 +105,7 @@ async def myOxbridgeChances(ctx, gcses):
         await ctx.send("Input your A-Level scores: (remember to seperate them out - etc A,A,B) - type N/A if none")
         msg = await bot.wait_for("message", check=check_response, timeout=15) #Timeout feature - waits 15 seconds
         await ctx.send(f"You have: {msg.content}") #checks user result
+        msg.content = msg.content.upper()
         aLevelsList = msg.content.split(",")
         for i in range(len(aLevelsList)):
           if i == "A*":
